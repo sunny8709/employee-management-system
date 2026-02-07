@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: employee-management-system
+  
+  datasource:
+    url: jdbc:mysql://localhost:3306/employee_management_db
+    username: root
+    password: S@s@1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  security:
+    user:
+      name: admin
+      password: admin123
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always

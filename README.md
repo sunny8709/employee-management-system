@@ -547,41 +547,6 @@ This project demonstrates:
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is created for educational purposes.
-
----
-
-## 👨‍💻 Author
-
-**Your Name**  
-📧 Email: your.email@example.com  
-🔗 LinkedIn: [Your Profile](#)  
-🐙 GitHub: [Your GitHub](#)
-
----
-
-## 🙏 Acknowledgments
-
-- Spring Boot Documentation
-- Hibernate ORM Documentation
-- MySQL Documentation
-- JUnit 5 Documentation
-
----
 
 <div align="center">
 

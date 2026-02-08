@@ -19,6 +19,10 @@ public class AttendanceService {
     private final EmployeeRepository employeeRepository;
 
     public Attendance trackAttendance(Long employeeId, LocalDate date, String status) {
+        if (employeeId == null) {
+            throw new IllegalArgumentException("Employee ID cannot be null");
+        }
+
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 
@@ -32,6 +36,10 @@ public class AttendanceService {
     }
 
     public Attendance markCheckOut(Long attendanceId) {
+        if (attendanceId == null) {
+            throw new IllegalArgumentException("Attendance ID cannot be null");
+        }
+
         Attendance attendance = attendanceRepository.findById(attendanceId)
                 .orElseThrow(() -> new RuntimeException("Attendance record not found"));
 
@@ -48,14 +56,18 @@ public class AttendanceService {
     }
 
     public List<Attendance> getEmployeeAttendanceLogs(Long employeeId) {
+        if (employeeId == null) {
+            throw new IllegalArgumentException("Employee ID cannot be null");
+        }
+
         return attendanceRepository.findByEmployeeEmployeeId(employeeId);
     }
 
     public List<Attendance> getAttendanceByDate(LocalDate date) {
-        return attendanceRepository.findByAttendanceDate(date);
-    }
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
 
-    public List<Attendance> generateAttendanceReport(Long employeeId) {
-        return attendanceRepository.findByEmployeeEmployeeId(employeeId);
+        return attendanceRepository.findByAttendanceDate(date);
     }
 }

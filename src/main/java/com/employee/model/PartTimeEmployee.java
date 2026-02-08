@@ -14,12 +14,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @DiscriminatorValue("PART_TIME")
 public class PartTimeEmployee extends Employee {
-    
+
     private Double hourlyRate;
     private Integer hoursWorked;
-    
+
     @Override
     public Double calculateSalary() {
-        return hourlyRate != null && hoursWorked != null ? hourlyRate * hoursWorked : 0.0;
+        if (hourlyRate != null && hoursWorked != null && hourlyRate > 0 && hoursWorked > 0) {
+            return hourlyRate * hoursWorked;
+        }
+        return 0.0;
     }
 }

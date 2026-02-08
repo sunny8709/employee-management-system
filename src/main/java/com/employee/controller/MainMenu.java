@@ -21,29 +21,41 @@ public class MainMenu {
     private final EmployeeService employeeService;
     private final PayrollService payrollService;
     private final AttendanceService attendanceService;
-    private final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
 
     public void displayMenu() {
-        while (true) {
-            System.out.println("\n=== Employee Management System ===");
-            System.out.println("1. Employee Management");
-            System.out.println("2. Attendance Tracking");
-            System.out.println("3. Payroll Processing");
-            System.out.println("4. Exit");
-            System.out.print("Choose an option: ");
+        // Initialize scanner for this session
+        if (scanner == null) {
+            scanner = new Scanner(System.in);
+        }
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+        try {
+            while (true) {
+                System.out.println("\n=== Employee Management System ===");
+                System.out.println("1. Employee Management");
+                System.out.println("2. Attendance Tracking");
+                System.out.println("3. Payroll Processing");
+                System.out.println("4. Exit");
+                System.out.print("Choose an option: ");
 
-            switch (choice) {
-                case 1 -> employeeOperations();
-                case 2 -> attendanceOperations();
-                case 3 -> payrollOperations();
-                case 4 -> {
-                    System.out.println("Exiting system...");
-                    return;
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (choice) {
+                    case 1 -> employeeOperations();
+                    case 2 -> attendanceOperations();
+                    case 3 -> payrollOperations();
+                    case 4 -> {
+                        System.out.println("Exiting system...");
+                        return;
+                    }
+                    default -> logger.warn("Invalid option. Please try again.");
                 }
-                default -> logger.warn("Invalid option. Please try again.");
+            }
+        } finally {
+            // Close scanner when exiting
+            if (scanner != null) {
+                scanner.close();
             }
         }
     }
@@ -167,7 +179,7 @@ public class MainMenu {
             Long empId = scanner.nextLong();
             scanner.nextLine();
 
-            attendanceService.generateAttendanceReport(empId).forEach(
+            attendanceService.getEmployeeAttendanceLogs(empId).forEach(
                     att -> logger.info("Date: {}, Status: {}", att.getAttendanceDate(), att.getStatus()));
         }
     }

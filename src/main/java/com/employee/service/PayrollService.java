@@ -20,6 +20,10 @@ public class PayrollService implements PayrollOperations {
 
     @Override
     public Double calculateSalary(Long employeeId) {
+        if (employeeId == null) {
+            throw new IllegalArgumentException("Employee ID cannot be null");
+        }
+
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         return employee.calculateSalary();
@@ -27,6 +31,16 @@ public class PayrollService implements PayrollOperations {
 
     @Override
     public Payroll generatePayrollReport(Long employeeId, String month, Integer year) {
+        if (employeeId == null) {
+            throw new IllegalArgumentException("Employee ID cannot be null");
+        }
+        if (month == null || month.trim().isEmpty()) {
+            throw new IllegalArgumentException("Month cannot be null or empty");
+        }
+        if (year == null) {
+            throw new IllegalArgumentException("Year cannot be null");
+        }
+
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 
@@ -51,15 +65,31 @@ public class PayrollService implements PayrollOperations {
 
     @Override
     public Double handleDeductions(Double salary, Double deductions) {
+        if (salary == null) {
+            throw new IllegalArgumentException("Salary cannot be null");
+        }
+        if (deductions == null) {
+            throw new IllegalArgumentException("Deductions cannot be null");
+        }
         return salary - deductions;
     }
 
     @Override
     public Double handleAllowances(Double salary, Double allowances) {
+        if (salary == null) {
+            throw new IllegalArgumentException("Salary cannot be null");
+        }
+        if (allowances == null) {
+            throw new IllegalArgumentException("Allowances cannot be null");
+        }
         return salary + allowances;
     }
 
     public List<Payroll> getEmployeePayrollHistory(Long employeeId) {
+        if (employeeId == null) {
+            throw new IllegalArgumentException("Employee ID cannot be null");
+        }
+
         return payrollRepository.findByEmployeeEmployeeId(employeeId);
     }
 

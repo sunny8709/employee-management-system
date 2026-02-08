@@ -20,6 +20,8 @@ public class ContractEmployee extends Employee {
 
     @Override
     public Double calculateSalary() {
-        return contractAmount != null ? contractAmount / (contractDuration != null ? contractDuration : 1) : 0.0;
+        return contractAmount != null
+                ? contractAmount / (contractDuration != null && contractDuration > 0 ? contractDuration : 1)
+                : 0.0;
     }
 }

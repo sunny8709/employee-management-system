@@ -21,9 +21,11 @@ public class App {
     }
 
     @Bean
-    public CommandLineRunner run(LoginService loginService, MainMenu mainMenu, UserRepository userRepository) {
+    public CommandLineRunner run(LoginService loginService, MainMenu mainMenu,
+            UserRepository userRepository,
+            org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
         return args -> {
-            createDefaultUser(userRepository);
+            createDefaultUser(userRepository, passwordEncoder);
 
             try (Scanner scanner = new Scanner(System.in)) {
                 System.out.println("=== Employee Management & Payroll System ===");
@@ -41,11 +43,12 @@ public class App {
         };
     }
 
-    private void createDefaultUser(UserRepository userRepository) {
+    private void createDefaultUser(UserRepository userRepository,
+            org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
         if (!userRepository.existsByUsername("admin")) {
             User admin = new User();
             admin.setUsername("admin");
-            admin.setPassword("admin123");
+            admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setRole("ADMIN");
             userRepository.save(admin);
             System.out.println("Default admin user created");

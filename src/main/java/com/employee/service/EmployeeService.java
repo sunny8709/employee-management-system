@@ -18,6 +18,10 @@ public class EmployeeService {
     }
 
     public Employee viewEmployeeDetails(Long employeeId) {
+        if (employeeId == null) {
+            throw new IllegalArgumentException("Employee ID cannot be null");
+        }
+
         return employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + employeeId));
     }
@@ -27,6 +31,13 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Long employeeId, Employee updatedEmployee) {
+        if (employeeId == null) {
+            throw new IllegalArgumentException("Employee ID cannot be null");
+        }
+        if (updatedEmployee == null) {
+            throw new IllegalArgumentException("Updated employee data cannot be null");
+        }
+
         Employee existing = viewEmployeeDetails(employeeId);
 
         existing.setName(updatedEmployee.getName());
@@ -38,6 +49,10 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Long employeeId) {
+        if (employeeId == null) {
+            throw new IllegalArgumentException("Employee ID cannot be null");
+        }
+
         if (!employeeRepository.existsById(employeeId)) {
             throw new RuntimeException("Employee not found with ID: " + employeeId);
         }
@@ -45,6 +60,10 @@ public class EmployeeService {
     }
 
     public List<Employee> findByDepartment(String department) {
+        if (department == null || department.trim().isEmpty()) {
+            throw new IllegalArgumentException("Department cannot be null or empty");
+        }
+
         return employeeRepository.findByDepartment(department);
     }
 }

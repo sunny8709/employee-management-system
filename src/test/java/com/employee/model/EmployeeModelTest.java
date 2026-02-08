@@ -7,8 +7,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @DisplayName("Employee Model Tests - OOP Concepts Verification")
 class EmployeeModelTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeModelTest.class);
 
     @Test
     @DisplayName("Test Encapsulation - Employee Base Class")
@@ -27,7 +32,7 @@ class EmployeeModelTest {
         assertEquals(50000.0, employee.getSalary());
         assertEquals("Developer", employee.getRoleType());
 
-        System.out.println("✅ Encapsulation Test PASSED - All getters/setters working");
+        logger.info("✅ Encapsulation Test PASSED - All getters/setters working");
     }
 
     @Test
@@ -50,8 +55,8 @@ class EmployeeModelTest {
         Double calculatedSalary = fullTime.calculateSalary();
         assertEquals(69000.0, calculatedSalary);
 
-        System.out.println("✅ Inheritance Test PASSED - FullTimeEmployee inherits from Employee");
-        System.out.println("   Base Salary: $60,000 | Calculated Salary: $" + calculatedSalary);
+        logger.info("✅ Inheritance Test PASSED - FullTimeEmployee inherits from Employee");
+        logger.info("   Base Salary: $60,000 | Calculated Salary: ${}", calculatedSalary);
     }
 
     @Test
@@ -74,8 +79,8 @@ class EmployeeModelTest {
         Double calculatedSalary = partTime.calculateSalary();
         assertEquals(3000.0, calculatedSalary);
 
-        System.out.println("✅ Inheritance Test PASSED - PartTimeEmployee inherits from Employee");
-        System.out.println("   Hourly Rate: $25 × 120 hours = $" + calculatedSalary);
+        logger.info("✅ Inheritance Test PASSED - PartTimeEmployee inherits from Employee");
+        logger.info("   Hourly Rate: $25 × 120 hours = ${}", calculatedSalary);
     }
 
     @Test
@@ -98,8 +103,8 @@ class EmployeeModelTest {
         Double calculatedSalary = contract.calculateSalary();
         assertEquals(8000.0, calculatedSalary);
 
-        System.out.println("✅ Inheritance Test PASSED - ContractEmployee inherits from Employee");
-        System.out.println("   Contract: $96,000 ÷ 12 months = $" + calculatedSalary + "/month");
+        logger.info("✅ Inheritance Test PASSED - ContractEmployee inherits from Employee");
+        logger.info("   Contract: $96,000 ÷ 12 months = ${}/month", calculatedSalary);
     }
 
     @Test
@@ -119,8 +124,8 @@ class EmployeeModelTest {
         assertEquals(expectedSalary, calculatedSalary);
         assertEquals("Java, Python, JavaScript", developer.getProgrammingLanguages());
 
-        System.out.println("✅ Polymorphism Test PASSED - Developer overrides calculateSalary()");
-        System.out.println("   Base: $75,000 + (5 projects × $1,000) = $" + calculatedSalary);
+        logger.info("✅ Polymorphism Test PASSED - Developer overrides calculateSalary()");
+        logger.info("   Base: $75,000 + (5 projects × $1,000) = ${}", calculatedSalary);
     }
 
     @Test
@@ -140,8 +145,8 @@ class EmployeeModelTest {
         assertEquals(expectedSalary, calculatedSalary);
         assertEquals("Selenium, JUnit, TestNG", tester.getTestingTools());
 
-        System.out.println("✅ Polymorphism Test PASSED - Tester overrides calculateSalary()");
-        System.out.println("   Base: $65,000 + (150 bugs × $50) = $" + calculatedSalary);
+        logger.info("✅ Polymorphism Test PASSED - Tester overrides calculateSalary()");
+        logger.info("   Base: $65,000 + (150 bugs × $50) = ${}", calculatedSalary);
     }
 
     @Test
@@ -161,8 +166,8 @@ class EmployeeModelTest {
         assertEquals(expectedSalary, calculatedSalary);
         assertEquals("Recruitment", hr.getHrSpecialization());
 
-        System.out.println("✅ Polymorphism Test PASSED - HR overrides calculateSalary()");
-        System.out.println("   Base: $70,000 + (25 employees × $200) = $" + calculatedSalary);
+        logger.info("✅ Polymorphism Test PASSED - HR overrides calculateSalary()");
+        logger.info("   Base: $70,000 + (25 employees × $200) = ${}", calculatedSalary);
     }
 
     @Test
@@ -190,11 +195,11 @@ class EmployeeModelTest {
         assertNotEquals(testerSalary, hrSalary);
         assertNotEquals(devSalary, hrSalary);
 
-        System.out.println("✅ Polymorphism Comparison Test PASSED");
-        System.out.println("   Same base salary ($60,000) produces different results:");
-        System.out.println("   Developer: $" + devSalary);
-        System.out.println("   Tester: $" + testerSalary);
-        System.out.println("   HR: $" + hrSalary);
+        logger.info("✅ Polymorphism Comparison Test PASSED");
+        logger.info("   Same base salary ($60,000) produces different results:");
+        logger.info("   Developer: ${}", devSalary);
+        logger.info("   Tester: ${}", testerSalary);
+        logger.info("   HR: ${}", hrSalary);
     }
 
     @Test
@@ -216,10 +221,10 @@ class EmployeeModelTest {
         assertEquals(8.5, attendance.getHoursWorked());
         assertNotNull(attendance.getEmployee());
 
-        System.out.println("✅ Attendance Model Test PASSED");
-        System.out.println("   Employee: " + employee.getName());
-        System.out.println("   Status: " + attendance.getStatus());
-        System.out.println("   Hours Worked: " + attendance.getHoursWorked());
+        logger.info("✅ Attendance Model Test PASSED");
+        logger.info("   Employee: {}", employee.getName());
+        logger.info("   Status: {}", attendance.getStatus());
+        logger.info("   Hours Worked: {}", attendance.getHoursWorked());
     }
 
     @Test
@@ -248,11 +253,11 @@ class EmployeeModelTest {
         assertEquals(71500.0, payroll.getNetSalary());
         assertEquals("PAID", payroll.getStatus());
 
-        System.out.println("✅ Payroll Model Test PASSED");
-        System.out.println("   Basic Salary: $" + payroll.getBasicSalary());
-        System.out.println("   Allowances: $" + payroll.getAllowances());
-        System.out.println("   Deductions: $" + payroll.getDeductions());
-        System.out.println("   Net Salary: $" + payroll.getNetSalary());
+        logger.info("✅ Payroll Model Test PASSED");
+        logger.info("   Basic Salary: ${}", payroll.getBasicSalary());
+        logger.info("   Allowances: ${}", payroll.getAllowances());
+        logger.info("   Deductions: ${}", payroll.getDeductions());
+        logger.info("   Net Salary: ${}", payroll.getNetSalary());
     }
 
     @Test
@@ -268,34 +273,34 @@ class EmployeeModelTest {
         assertEquals("testpass123", user.getPassword());
         assertEquals("ADMIN", user.getRole());
 
-        System.out.println("✅ User Model Test PASSED");
-        System.out.println("   Username: " + user.getUsername());
-        System.out.println("   Role: " + user.getRole());
+        logger.info("✅ User Model Test PASSED");
+        logger.info("   Username: {}", user.getUsername());
+        logger.info("   Role: {}", user.getRole());
     }
 
     @Test
     @DisplayName("Test All OOP Principles Together")
     void testAllOOPPrinciples() {
-        System.out.println("\n========================================");
-        System.out.println("COMPREHENSIVE OOP PRINCIPLES TEST");
-        System.out.println("========================================\n");
+        logger.info("\n========================================");
+        logger.info("COMPREHENSIVE OOP PRINCIPLES TEST");
+        logger.info("========================================\n");
 
         // 1. Encapsulation
         Employee baseEmployee = new Employee();
         baseEmployee.setName("Base Employee");
         baseEmployee.setSalary(50000.0);
-        System.out.println("1. ENCAPSULATION ✅");
-        System.out.println("   Private fields accessed via getters/setters");
-        System.out.println("   Employee: " + baseEmployee.getName() + " | Salary: $" + baseEmployee.getSalary());
+        logger.info("1. ENCAPSULATION ✅");
+        logger.info("   Private fields accessed via getters/setters");
+        logger.info("   Employee: {} | Salary: ${}", baseEmployee.getName(), baseEmployee.getSalary());
 
         // 2. Inheritance
         FullTimeEmployee fullTime = new FullTimeEmployee();
         fullTime.setName("Full Time Employee");
         fullTime.setSalary(60000.0);
         fullTime.setBenefits("Full Benefits");
-        System.out.println("\n2. INHERITANCE ✅");
-        System.out.println("   FullTimeEmployee inherits from Employee");
-        System.out.println("   Inherited: name, salary | Own: benefits");
+        logger.info("\n2. INHERITANCE ✅");
+        logger.info("   FullTimeEmployee inherits from Employee");
+        logger.info("   Inherited: name, salary | Own: benefits");
 
         // 3. Polymorphism
         Employee dev = new Developer();
@@ -306,20 +311,20 @@ class EmployeeModelTest {
         tester.setSalary(70000.0);
         ((Tester) tester).setBugsFound(120);
 
-        System.out.println("\n3. POLYMORPHISM ✅");
-        System.out.println("   Same method, different implementations:");
-        System.out.println("   Developer salary: $" + dev.calculateSalary());
-        System.out.println("   Tester salary: $" + tester.calculateSalary());
+        logger.info("\n3. POLYMORPHISM ✅");
+        logger.info("   Same method, different implementations:");
+        logger.info("   Developer salary: ${}", dev.calculateSalary());
+        logger.info("   Tester salary: ${}", tester.calculateSalary());
 
         // 4. Abstraction (demonstrated through interface usage)
-        System.out.println("\n4. ABSTRACTION ✅");
-        System.out.println("   PayrollOperations interface defines contract");
-        System.out.println("   PayrollService implements the interface");
-        System.out.println("   Implementation details hidden from users");
+        logger.info("\n4. ABSTRACTION ✅");
+        logger.info("   PayrollOperations interface defines contract");
+        logger.info("   PayrollService implements the interface");
+        logger.info("   Implementation details hidden from users");
 
-        System.out.println("\n========================================");
-        System.out.println("ALL OOP PRINCIPLES VERIFIED ✅");
-        System.out.println("========================================\n");
+        logger.info("\n========================================");
+        logger.info("ALL OOP PRINCIPLES VERIFIED ✅");
+        logger.info("========================================\n");
 
         assertTrue(true, "All OOP principles demonstrated successfully");
     }

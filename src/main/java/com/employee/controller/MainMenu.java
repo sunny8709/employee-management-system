@@ -6,6 +6,8 @@ import com.employee.service.EmployeeService;
 import com.employee.service.PayrollService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -13,6 +15,8 @@ import java.util.Scanner;
 @Component
 @RequiredArgsConstructor
 public class MainMenu {
+
+    private static final Logger logger = LoggerFactory.getLogger(MainMenu.class);
 
     private final EmployeeService employeeService;
     private final PayrollService payrollService;
@@ -39,7 +43,7 @@ public class MainMenu {
                     System.out.println("Exiting system...");
                     return;
                 }
-                default -> System.out.println("Invalid option. Please try again.");
+                default -> logger.warn("Invalid option. Please try again.");
             }
         }
     }
@@ -62,7 +66,7 @@ public class MainMenu {
             case 3 -> updateEmployee();
             case 4 -> deleteEmployee();
             case 5 -> viewAllEmployees();
-            default -> System.out.println("Invalid option");
+            default -> logger.warn("Invalid option");
         }
     }
 
@@ -81,7 +85,7 @@ public class MainMenu {
         employee.setSalary(salary);
 
         Employee saved = employeeService.addEmployee(employee);
-        System.out.println("Employee added successfully with ID: " + saved.getEmployeeId());
+        logger.info("Employee added successfully with ID: {}", saved.getEmployeeId());
     }
 
     private void viewEmployee() {
@@ -91,9 +95,9 @@ public class MainMenu {
 
         try {
             Employee employee = employeeService.viewEmployeeDetails(id);
-            System.out.println(employee.getEmployeeDetails());
+            logger.info(employee.getEmployeeDetails());
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            logger.error("Error: {}", e.getMessage());
         }
     }
 
@@ -117,9 +121,9 @@ public class MainMenu {
 
         try {
             employeeService.updateEmployee(id, updated);
-            System.out.println("Employee updated successfully");
+            logger.info("Employee updated successfully");
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            logger.error("Error: {}", e.getMessage());
         }
     }
 
@@ -130,14 +134,14 @@ public class MainMenu {
 
         try {
             employeeService.deleteEmployee(id);
-            System.out.println("Employee deleted successfully");
+            logger.info("Employee deleted successfully");
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            logger.error("Error: {}", e.getMessage());
         }
     }
 
     private void viewAllEmployees() {
-        employeeService.viewAllEmployees().forEach(emp -> System.out.println(emp.getEmployeeDetails()));
+        employeeService.viewAllEmployees().forEach(emp -> logger.info(emp.getEmployeeDetails()));
     }
 
     private void attendanceOperations() {
@@ -157,14 +161,14 @@ public class MainMenu {
             String status = scanner.nextLine();
 
             attendanceService.trackAttendance(empId, LocalDate.now(), status);
-            System.out.println("Attendance marked successfully");
+            logger.info("Attendance marked successfully");
         } else if (choice == 2) {
             System.out.print("Enter employee ID: ");
             Long empId = scanner.nextLong();
             scanner.nextLine();
 
             attendanceService.generateAttendanceReport(empId).forEach(
-                    att -> System.out.println("Date: " + att.getAttendanceDate() + ", Status: " + att.getStatus()));
+                    att -> logger.info("Date: {}, Status: {}", att.getAttendanceDate(), att.getStatus()));
         }
     }
 
@@ -188,14 +192,14 @@ public class MainMenu {
             scanner.nextLine();
 
             payrollService.generatePayrollReport(empId, month, year);
-            System.out.println("Payroll generated successfully");
+            logger.info("Payroll generated successfully");
         } else if (choice == 2) {
             System.out.print("Enter employee ID: ");
             Long empId = scanner.nextLong();
             scanner.nextLine();
 
             payrollService.getEmployeePayrollHistory(empId).forEach(
-                    pay -> System.out.println("Month: " + pay.getMonth() + ", Net Salary: " + pay.getNetSalary()));
+                    pay -> logger.info("Month: {}, Net Salary: {}", pay.getMonth(), pay.getNetSalary()));
         }
     }
 }

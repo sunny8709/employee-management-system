@@ -1,5 +1,7 @@
 package com.employee.service;
 
+import com.employee.exception.InvalidInputException;
+import com.employee.exception.ResourceNotFoundException;
 import com.employee.model.User;
 import com.employee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,13 +9,6 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Credential Validation Module
- * Responsibilities:
- * - Validate username and password
- * - Verify user authorization
- * - Handle authentication exceptions
- */
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -21,13 +16,6 @@ public class AuthService {
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
     private final UserRepository userRepository;
 
-    /**
-     * Validates user credentials against database
-     * 
-     * @param username User's username
-     * @param password User's password
-     * @return true if credentials are valid, false otherwise
-     */
     public boolean validateCredentials(String username, String password) {
         try {
             User user = userRepository.findByUsername(username)
@@ -54,33 +42,18 @@ public class AuthService {
         }
     }
 
-    /**
-     * Authenticates user and returns User object if successful
-     * 
-     * @param username User's username
-     * @param password User's password
-     * @return User object if authentication successful
-     * @throws RuntimeException if authentication fails
-     */
     public User authenticateUser(String username, String password) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found: " + username));
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
         if (!user.getPassword().equals(password)) {
-            throw new RuntimeException("Invalid credentials");
+            throw new InvalidInputException("Invalid credentials");
         }
 
         logger.info("User authenticated successfully: {}", username);
         return user;
     }
 
-    /**
-     * Verifies if user has required authorization/role
-     * 
-     * @param username     User's username
-     * @param requiredRole Required role for authorization
-     * @return true if user has required role, false otherwise
-     */
     public boolean verifyUserAuthorization(String username, String requiredRole) {
         try {
             User user = userRepository.findByUsername(username)
@@ -106,12 +79,6 @@ public class AuthService {
         }
     }
 
-    /**
-     * Handles authentication exceptions
-     * 
-     * @param e Exception to handle
-     * @return User-friendly error message
-     */
     public String handleAuthenticationException(Exception e) {
         logger.error("Authentication exception occurred: {}", e.getMessage());
 

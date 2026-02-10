@@ -1,5 +1,7 @@
 package com.employee.service;
 
+import com.employee.exception.InvalidInputException;
+import com.employee.exception.ResourceNotFoundException;
 import com.employee.interfaces.PayrollOperations;
 import com.employee.model.Employee;
 import com.employee.model.Payroll;
@@ -21,28 +23,28 @@ public class PayrollService implements PayrollOperations {
     @Override
     public Double calculateSalary(Long employeeId) {
         if (employeeId == null) {
-            throw new IllegalArgumentException("Employee ID cannot be null");
+            throw new InvalidInputException("Employee ID cannot be null");
         }
 
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", "ID", employeeId));
         return employee.calculateSalary();
     }
 
     @Override
     public Payroll generatePayrollReport(Long employeeId, String month, Integer year) {
         if (employeeId == null) {
-            throw new IllegalArgumentException("Employee ID cannot be null");
+            throw new InvalidInputException("Employee ID cannot be null");
         }
         if (month == null || month.trim().isEmpty()) {
-            throw new IllegalArgumentException("Month cannot be null or empty");
+            throw new InvalidInputException("Month cannot be null or empty");
         }
         if (year == null) {
-            throw new IllegalArgumentException("Year cannot be null");
+            throw new InvalidInputException("Year cannot be null");
         }
 
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", "ID", employeeId));
 
         Double basicSalary = employee.calculateSalary();
         Double allowances = 2000.0;
@@ -66,10 +68,10 @@ public class PayrollService implements PayrollOperations {
     @Override
     public Double handleDeductions(Double salary, Double deductions) {
         if (salary == null) {
-            throw new IllegalArgumentException("Salary cannot be null");
+            throw new InvalidInputException("Salary cannot be null");
         }
         if (deductions == null) {
-            throw new IllegalArgumentException("Deductions cannot be null");
+            throw new InvalidInputException("Deductions cannot be null");
         }
         return salary - deductions;
     }
@@ -77,17 +79,17 @@ public class PayrollService implements PayrollOperations {
     @Override
     public Double handleAllowances(Double salary, Double allowances) {
         if (salary == null) {
-            throw new IllegalArgumentException("Salary cannot be null");
+            throw new InvalidInputException("Salary cannot be null");
         }
         if (allowances == null) {
-            throw new IllegalArgumentException("Allowances cannot be null");
+            throw new InvalidInputException("Allowances cannot be null");
         }
         return salary + allowances;
     }
 
     public List<Payroll> getEmployeePayrollHistory(Long employeeId) {
         if (employeeId == null) {
-            throw new IllegalArgumentException("Employee ID cannot be null");
+            throw new InvalidInputException("Employee ID cannot be null");
         }
 
         return payrollRepository.findByEmployeeEmployeeId(employeeId);

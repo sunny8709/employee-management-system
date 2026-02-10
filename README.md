@@ -157,28 +157,6 @@ employeeManagement/
 
 ---
 
-## 🗄️ Database Schema
-
-### **Entities**
-
-1. **Employee** - Base employee information
-2. **FullTimeEmployee** - Full-time specific data
-3. **PartTimeEmployee** - Part-time specific data
-4. **ContractEmployee** - Contract specific data
-5. **Developer** - Developer specific data
-6. **Tester** - Tester specific data
-7. **HR** - HR specific data
-8. **Attendance** - Daily attendance records
-9. **Payroll** - Monthly payroll records
-10. **User** - Authentication credentials
-
-### **Relationships**
-
-- **One-to-Many**: Employee → Attendance
-- **One-to-Many**: Employee → Payroll
-- **Inheritance**: Single Table Strategy for employee types
-
----
 
 
 ### **Prerequisites**
@@ -311,38 +289,6 @@ While this is primarily a console application, **Spring Actuator** provides moni
 
 ---
 
-## 🧪 Testing
-
-### **Run All Tests**
-
-```bash
-mvn test
-```
-
-### **Test Coverage**
-
-The `EmployeeModelTest.java` includes comprehensive tests for:
-
-- ✅ **Encapsulation**: Getter/Setter validation
-- ✅ **Inheritance**: Subclass property inheritance
-- ✅ **Polymorphism**: Method overriding verification
-- ✅ **Abstraction**: Interface implementation
-- ✅ **Model Integrity**: Attendance, Payroll, User models
-
-### **Sample Test Output**
-
-```
-✅ Encapsulation Test PASSED - All getters/setters working
-✅ Inheritance Test PASSED - FullTimeEmployee inherits from Employee
-✅ Polymorphism Test PASSED - Developer overrides calculateSalary()
-✅ Attendance Model Test PASSED
-✅ Payroll Model Test PASSED
-========================================
-ALL OOP PRINCIPLES VERIFIED ✅
-========================================
-```
-
----
 
 ## 🔑 Default Credentials
 
@@ -397,43 +343,6 @@ Payroll generated successfully
 
 ---
 
-## 🔧 Configuration
-
-### **application.yml**
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/employee_management_db
-    username: root
-    password: your_password
-  
-  jpa:
-    hibernate:
-      ddl-auto: update      # Auto-create/update schema
-    show-sql: true          # Log SQL queries
-  
-server:
-  port: 8080                # Application port
-```
-
----
-
-## 🐛 Troubleshooting
-
-### **Issue: Database Connection Failed**
-- ✅ Verify MySQL is running
-- ✅ Check database credentials in `application.yml`
-- ✅ Ensure database `employee_management_db` exists
-
-### **Issue: Port 8080 Already in Use**
-- ✅ Change port in `application.yml`: `server.port: 8081`
-- ✅ Or stop the process using port 8080
-
-### **Issue: Tests Failing**
-- ✅ Ensure database is accessible
-- ✅ Run `mvn clean install` to rebuild
-- ✅ Check test logs for specific errors
 
 ---
 

@@ -1,5 +1,7 @@
 package com.employee.service;
 
+import com.employee.exception.InvalidInputException;
+import com.employee.exception.ResourceNotFoundException;
 import com.employee.model.Attendance;
 import com.employee.model.Employee;
 import com.employee.repository.AttendanceRepository;
@@ -20,11 +22,11 @@ public class AttendanceService {
 
     public Attendance trackAttendance(Long employeeId, LocalDate date, String status) {
         if (employeeId == null) {
-            throw new IllegalArgumentException("Employee ID cannot be null");
+            throw new InvalidInputException("Employee ID cannot be null");
         }
 
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", "ID", employeeId));
 
         Attendance attendance = new Attendance();
         attendance.setEmployee(employee);
@@ -37,11 +39,11 @@ public class AttendanceService {
 
     public Attendance markCheckOut(Long attendanceId) {
         if (attendanceId == null) {
-            throw new IllegalArgumentException("Attendance ID cannot be null");
+            throw new InvalidInputException("Attendance ID cannot be null");
         }
 
         Attendance attendance = attendanceRepository.findById(attendanceId)
-                .orElseThrow(() -> new RuntimeException("Attendance record not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Attendance", "ID", attendanceId));
 
         attendance.setCheckOutTime(LocalTime.now());
 
@@ -57,7 +59,7 @@ public class AttendanceService {
 
     public List<Attendance> getEmployeeAttendanceLogs(Long employeeId) {
         if (employeeId == null) {
-            throw new IllegalArgumentException("Employee ID cannot be null");
+            throw new InvalidInputException("Employee ID cannot be null");
         }
 
         return attendanceRepository.findByEmployeeEmployeeId(employeeId);
@@ -65,7 +67,7 @@ public class AttendanceService {
 
     public List<Attendance> getAttendanceByDate(LocalDate date) {
         if (date == null) {
-            throw new IllegalArgumentException("Date cannot be null");
+            throw new InvalidInputException("Date cannot be null");
         }
 
         return attendanceRepository.findByAttendanceDate(date);

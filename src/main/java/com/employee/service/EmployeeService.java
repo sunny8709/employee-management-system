@@ -1,5 +1,7 @@
 package com.employee.service;
 
+import com.employee.exception.InvalidInputException;
+import com.employee.exception.ResourceNotFoundException;
 import com.employee.model.Employee;
 import com.employee.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +21,11 @@ public class EmployeeService {
 
     public Employee viewEmployeeDetails(Long employeeId) {
         if (employeeId == null) {
-            throw new IllegalArgumentException("Employee ID cannot be null");
+            throw new InvalidInputException("Employee ID cannot be null");
         }
 
         return employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + employeeId));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", "ID", employeeId));
     }
 
     public List<Employee> viewAllEmployees() {
@@ -32,10 +34,10 @@ public class EmployeeService {
 
     public Employee updateEmployee(Long employeeId, Employee updatedEmployee) {
         if (employeeId == null) {
-            throw new IllegalArgumentException("Employee ID cannot be null");
+            throw new InvalidInputException("Employee ID cannot be null");
         }
         if (updatedEmployee == null) {
-            throw new IllegalArgumentException("Updated employee data cannot be null");
+            throw new InvalidInputException("Updated employee data cannot be null");
         }
 
         Employee existing = viewEmployeeDetails(employeeId);
@@ -50,18 +52,18 @@ public class EmployeeService {
 
     public void deleteEmployee(Long employeeId) {
         if (employeeId == null) {
-            throw new IllegalArgumentException("Employee ID cannot be null");
+            throw new InvalidInputException("Employee ID cannot be null");
         }
 
         if (!employeeRepository.existsById(employeeId)) {
-            throw new RuntimeException("Employee not found with ID: " + employeeId);
+            throw new ResourceNotFoundException("Employee", "ID", employeeId);
         }
         employeeRepository.deleteById(employeeId);
     }
 
     public List<Employee> findByDepartment(String department) {
         if (department == null || department.trim().isEmpty()) {
-            throw new IllegalArgumentException("Department cannot be null or empty");
+            throw new InvalidInputException("Department cannot be null or empty");
         }
 
         return employeeRepository.findByDepartment(department);

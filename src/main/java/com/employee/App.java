@@ -21,37 +21,36 @@ public class App {
     }
 
     @Bean
-    public CommandLineRunner run(LoginService loginService, MainMenu mainMenu,
-            UserRepository userRepository,
-            org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
+    public CommandLineRunner run(LoginService loginService, MainMenu mainMenu, UserRepository userRepository) {
         return args -> {
-            createDefaultUser(userRepository, passwordEncoder);
+            // Create default admin user if not exists
+            createDefaultUser(userRepository);
 
             try (Scanner scanner = new Scanner(System.in)) {
-                System.out.println("=== Employee Management & Payroll System ===");
+                System.out.println("\n=== Employee Management & Payroll System ===");
                 System.out.print("Enter username: ");
                 String username = scanner.nextLine();
                 System.out.print("Enter password: ");
                 String password = scanner.nextLine();
 
                 if (loginService.login(username, password)) {
+                    System.out.println("\nLogin successful! Welcome " + username + "\n");
                     mainMenu.displayMenu();
                 } else {
-                    System.out.println("Authentication failed. Exiting...");
+                    System.out.println("\nAuthentication failed. Exiting...");
                 }
             }
         };
     }
 
-    private void createDefaultUser(UserRepository userRepository,
-            org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
+    private void createDefaultUser(UserRepository userRepository) {
         if (!userRepository.existsByUsername("admin")) {
             User admin = new User();
             admin.setUsername("admin");
-            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setPassword("admin123"); // Plain text password for simplicity
             admin.setRole("ADMIN");
             userRepository.save(admin);
-            System.out.println("Default admin user created");
+            System.out.println("✓ Default admin user created (username: admin, password: admin123)");
         }
     }
 }

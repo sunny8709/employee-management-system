@@ -1,18 +1,17 @@
 # 🏢 Employee Management & Payroll System
 
-A comprehensive **Employee Management and Payroll System** built with **Java 17**, **Spring Boot 3.x**, and **MySQL**, demonstrating core **Object-Oriented Programming (OOP)** principles with a layered architecture.
+A simple **Employee Management and Payroll System** built with **Java 17**, **Spring Boot 3.x**, and **MySQL**, demonstrating core **Object-Oriented Programming (OOP)** principles with a layered architecture.
 
 ---
 ## 🎯 Overview
 
-This project is a **console-based Employee Management System** that provides comprehensive functionality for managing employees, tracking attendance, and processing payroll. It showcases professional software development practices including:
+This is a **console-based Employee Management System** that provides basic functionality for managing employees, tracking attendance, and processing payroll. It demonstrates:
 
-- ✅ **Layered Architecture** (Controller → Service → Repository)
+- ✅ **Layered Architecture** (Controller → Service → Repository → Model)
 - ✅ **OOP Principles** (Encapsulation, Inheritance, Polymorphism, Abstraction)
 - ✅ **Spring Boot 3.x** with JPA/Hibernate
-- ✅ **MySQL Database** with automatic schema generation
-- ✅ **Spring Security** for authentication
-- ✅ **Comprehensive Unit Testing** with JUnit 5
+- ✅ **MySQL Database** integration
+- ✅ **Simple Authentication** (username/password)
 
 ---
 
@@ -27,23 +26,18 @@ This project is a **console-based Employee Management System** that provides com
 
 ### 2. **Attendance Tracking**
 - 📅 Mark daily attendance (PRESENT/ABSENT)
-- 📊 Generate attendance reports
+- 📊 View attendance reports
 - ⏰ Track check-in/check-out times
-- 🕐 Calculate hours worked
 
 ### 3. **Payroll Processing**
 - 💰 Generate monthly payroll
-- 📈 Calculate salaries with role-based bonuses
+- 📈 Calculate salaries based on employee type
 - 📜 View payroll history
-- 💵 Track allowances and deductions
 
 ### 4. **Employee Types**
-- 👔 **Full-Time Employees**: Benefits + Annual Leave
-- ⏱️ **Part-Time Employees**: Hourly rate calculation
-- 📝 **Contract Employees**: Contract-based payments
-- 💻 **Developers**: Project completion bonuses
-- 🧪 **Testers**: Bug-finding incentives
-- 👥 **HR**: Employee management bonuses
+- 👔 **Full-Time Employees**: Salary + 15% bonus
+- ⏱️ **Part-Time Employees**: Hourly rate × hours worked
+- 📝 **Contract Employees**: Fixed contract amount
 
 ---
 
@@ -59,7 +53,7 @@ public class Employee {
     private String department;
     private Double salary;
     
-    // Getters and Setters
+    // Getters and Setters (via Lombok @Data)
 }
 ```
 
@@ -70,29 +64,26 @@ Employee hierarchy demonstrates class inheritance:
 Employee (Base Class)
 ├── FullTimeEmployee
 ├── PartTimeEmployee
-├── ContractEmployee
-├── Developer
-├── Tester
-└── HR
+└── ContractEmployee
 ```
 
 ### 3. **Polymorphism** 🔄
-Method overriding for role-specific salary calculations:
+Method overriding for employee type-specific salary calculations:
 
 ```java
-// Developer: Base salary + (Projects × $1,000)
+// FullTimeEmployee: Base salary + 15% bonus
 public Double calculateSalary() {
-    return getSalary() + (projectsCompleted * 1000);
+    return getSalary() + (getSalary() * 0.15);
 }
 
-// Tester: Base salary + (Bugs × $50)
+// PartTimeEmployee: Hourly rate × hours worked
 public Double calculateSalary() {
-    return getSalary() + (bugsFound * 50);
+    return hourlyRate * hoursWorked;
 }
 
-// HR: Base salary + (Employees Managed × $200)
+// ContractEmployee: Fixed contract amount
 public Double calculateSalary() {
-    return getSalary() + (employeesManaged * 200);
+    return contractAmount;
 }
 ```
 
@@ -101,8 +92,8 @@ Interface-based design for service contracts:
 
 ```java
 public interface PayrollOperations {
-    void generatePayrollReport(Long employeeId, String month, Integer year);
-    List<Payroll> getEmployeePayrollHistory(Long employeeId);
+    Double calculateSalary(Long employeeId);
+    Payroll generatePayrollReport(Long employeeId, String month, Integer year);
 }
 ```
 
@@ -116,11 +107,8 @@ public interface PayrollOperations {
 | **Framework** | Spring Boot | 3.2.0 |
 | **ORM** | Hibernate (JPA) | 6.x |
 | **Database** | MySQL | 8.x |
-| **Security** | Spring Security | 6.x |
 | **Build Tool** | Maven | 3.x |
 | **Testing** | JUnit 5 | 5.x |
-| **Validation** | Spring Validation | 3.x |
-| **Monitoring** | Spring Actuator | 3.x |
 
 ---
 
@@ -133,20 +121,15 @@ employeeManagement/
 │   ├── main/
 │   │   ├── java/com/employee/
 │   │   │   ├── App.java                    # Main application entry point
-│   │   │   ├── config/
-│   │   │   │   └── SecurityConfig.java     # Security configuration
 │   │   │   ├── controller/
 │   │   │   │   └── MainMenu.java           # Console-based controller
 │   │   │   ├── interfaces/
 │   │   │   │   └── PayrollOperations.java  # Service interface (Abstraction)
 │   │   │   ├── model/                      # Entity classes
 │   │   │   │   ├── Employee.java           # Base class
-│   │   │   │   ├── FullTimeEmployee.java   # Inheritance
-│   │   │   │   ├── PartTimeEmployee.java   # Inheritance
-│   │   │   │   ├── ContractEmployee.java   # Inheritance
-│   │   │   │   ├── Developer.java          # Polymorphism
-│   │   │   │   ├── Tester.java             # Polymorphism
-│   │   │   │   ├── HR.java                 # Polymorphism
+│   │   │   │   ├── FullTimeEmployee.java   # Inheritance + Polymorphism
+│   │   │   │   ├── PartTimeEmployee.java   # Inheritance + Polymorphism
+│   │   │   │   ├── ContractEmployee.java   # Inheritance + Polymorphism
 │   │   │   │   ├── Attendance.java
 │   │   │   │   ├── Payroll.java
 │   │   │   │   └── User.java
@@ -159,14 +142,14 @@ employeeManagement/
 │   │   │       ├── EmployeeService.java
 │   │   │       ├── AttendanceService.java
 │   │   │       ├── PayrollService.java
-│   │   │       ├── AuthService.java
+│   │   │       ├── AuthService.java        # Credential validation
 │   │   │       └── LoginService.java
 │   │   └── resources/
 │   │       └── application.yml             # Configuration file
 │   │
 │   └── test/
 │       └── java/com/employee/model/
-│           └── EmployeeModelTest.java      # Comprehensive OOP tests
+│           └── EmployeeModelTest.java      # OOP tests
 │
 ├── pom.xml                                 # Maven dependencies
 └── README.md                               # This file

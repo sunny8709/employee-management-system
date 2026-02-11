@@ -6,10 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * Standard error response structure for all exceptions.
- * Provides consistent error information across the application.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

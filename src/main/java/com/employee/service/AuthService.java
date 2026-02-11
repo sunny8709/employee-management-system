@@ -26,7 +26,6 @@ public class AuthService {
                 return false;
             }
 
-            // Simple password validation (plain text comparison)
             boolean isValid = user.getPassword().equals(password);
 
             if (isValid) {

@@ -6,14 +6,12 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 @Service
 @RequiredArgsConstructor
 public class LoginService {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
     private final AuthService authService;
-
 
     public User processLogin(String username, String password) {
         if (username == null || username.trim().isEmpty()) {
@@ -24,10 +22,8 @@ public class LoginService {
             throw new RuntimeException("Password cannot be empty");
         }
 
-        // Delegate to AuthService for credential validation
         return authService.authenticateUser(username, password);
     }
-
 
     public boolean login(String username, String password) {
         try {

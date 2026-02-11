@@ -23,7 +23,6 @@ public class App {
     @Bean
     public CommandLineRunner run(LoginService loginService, MainMenu mainMenu, UserRepository userRepository) {
         return args -> {
-            // Create default admin user if not exists
             createDefaultUser(userRepository);
 
             try (Scanner scanner = new Scanner(System.in)) {
@@ -47,7 +46,7 @@ public class App {
         if (!userRepository.existsByUsername("admin")) {
             User admin = new User();
             admin.setUsername("admin");
-            admin.setPassword("admin123"); // Plain text password for simplicity
+            admin.setPassword("admin123");
             admin.setRole("ADMIN");
             userRepository.save(admin);
             System.out.println("✓ Default admin user created (username: admin, password: admin123)");

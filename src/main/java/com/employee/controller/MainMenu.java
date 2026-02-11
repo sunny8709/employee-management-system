@@ -24,7 +24,6 @@ public class MainMenu {
     private Scanner scanner;
 
     public void displayMenu() {
-        // Initialize scanner for this session
         if (scanner == null) {
             scanner = new Scanner(System.in);
         }
@@ -53,7 +52,6 @@ public class MainMenu {
                 }
             }
         } finally {
-            // Close scanner when exiting
             if (scanner != null) {
                 scanner.close();
             }
